@@ -8,9 +8,11 @@ const loader = document.querySelector('.loader-div');
 
 // Initialization
 window.onload = () => {
-    loader.style.display = 'none';
-    weather.fetchWeather("Budapest");
-    setInterval(timeInt, 1000);
+	setTimeout(() => {
+        loader.style.display = 'none';
+    }, 1000);
+	setInterval(updateTime, 1000);
+	weather.fetchWeather("Budapest");
 };
 
 //dealing with metric and imperial system
@@ -80,7 +82,7 @@ let weather = {
 
 //dealing with time
 let AM_PM = "AM"; //am = before midday
-const timeInt = setInterval(() => {
+const updateTime = setInterval(() => {
     let date = new Date();
     let utc_hour = date.getUTCHours();
     let utc_minutes = date.getUTCMinutes();
