@@ -1,10 +1,15 @@
 const searchbar = document.querySelector(".searchInput");
 const searchButton = document.querySelector('.searchButton');
 const toggleButton = document.querySelector(".unit");
+const toggleTimeButton = document.querySelector(".timeFrame");
 const weatherContainer = document.querySelector('.weather');
 const errorMsg = document.querySelector('.error_msg');
 const clock = document.querySelector('.clock');
 const loader = document.querySelector('.loader-div');
+
+let unit = "metric";
+let isMetric = true;
+let isClockTwelve = true;
 
 // Initialization
 window.onload = () => {
@@ -14,17 +19,6 @@ window.onload = () => {
 	setInterval(updateTime, 1000);
 	weather.fetchWeather("Budapest");
 };
-
-//dealing with metric and imperial system
-let unit = "metric";
-let isMetric = true;
-
-toggleButton.addEventListener("click", () => {
-    isMetric = !isMetric;
-    unit = isMetric ? 'metric' : 'imperial';
-    weather.search_reload();
-})
-
 
 //api
 let city = "";
@@ -105,8 +99,9 @@ const updateTime = setInterval(() => {
     if (hours >= 24) hours -= 24;
     if (hours >= 12) {
         amPm = 'PM';
-        if (hours > 12) hours -= 12;
-        if (hours === 0) hours = 12;
+        if (isClockTwelve) {
+            if (hours > 12) hours -= 12;
+        }
     }
 
     clock.innerText = formatTime(hours, minutes, utcSeconds, amPm);
@@ -133,4 +128,16 @@ searchbar.addEventListener("keyup", function (event){
             searchbar.value = "";
         }
     }
+});
+
+
+toggleButton.addEventListener("click", () => {
+    isMetric = !isMetric;
+    unit = isMetric ? 'metric' : 'imperial';
+    weather.search_reload();
+});
+
+toggleTimeButton.addEventListener("click", () => {
+    isClockTwelve = !isClockTwelve;
+    updateTime
 });
