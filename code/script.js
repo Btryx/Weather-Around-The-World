@@ -81,123 +81,41 @@ let weather = {
 };
 
 //dealing with time
-let AM_PM = "AM"; //am = before midday
 const updateTime = setInterval(() => {
     let date = new Date();
-    let utc_hour = date.getUTCHours();
-    let utc_minutes = date.getUTCMinutes();
-    let utc_seconds = date.getUTCSeconds();
-    let hour = 0;
-    let diff_in_hours = parseInt(currentTimezoneOffset/3600);
-    if(currentTimezoneOffset % 3600 == 0){
+    let utcHours = date.getUTCHours();
+    let utcMinutes = date.getUTCMinutes();
+    let utcSeconds = date.getUTCSeconds();
+    const localOffsetHours = Math.floor(currentTimezoneOffset / 3600);
+    const localOffsetMinutes = (currentTimezoneOffset % 3600) / 60;
 
-        hour = utc_hour + (diff_in_hours);
-        if(hour >= 24){
-            AM_PM = "AM";
-            hour -= 24;
-        }
-        else if(hour >= 12){
-            AM_PM = "PM";
-            hour -= 12;
-            if(hour == 0){
-                hour = 12;
-            }
-        else if(hour < 0){
-            hour = abs(hour);
-            AM_PM = "PM";
-        }
-        }else{
-            AM_PM = "AM";
-        }
 
-        if(hour == 12){
-            AM_PM = "PM";
-        }
+    let hours = utcHours + localOffsetHours;
+    let minutes = utcMinutes + localOffsetMinutes;
+    let amPm = 'AM'; //am = before midday
 
-        if(hour < 0){
-            hour += 12;
-        }
-    }else{
-        hour = utc_hour + (diff_in_hours); 
-        if( currentTimezoneOffset > 0){
-            m_minute = (currentTimezoneOffset % 3600)/60;
-            hour = utc_hour + (diff_in_hours); 
-            utc_minutes += m_minute;
-
-            if(utc_minutes >= 60){
-                utc_minutes -= 60;
-                hour += 1;
-            }
-
-            if(hour >= 24){
-                AM_PM = "AM";
-                hour -= 24;
-            }
-            else if(hour >= 12){
-                AM_PM = "PM";
-                hour -= 12;
-                if(hour == 0){
-                    hour = 12;
-                }
-            }else{
-                AM_PM = "AM";
-            }
-
-            if(hour == 12){
-                AM_PM = "PM";
-            }
-            if(hour < 0){
-                hour += 12;
-            }
-
-        //if diff is negative
-        }else{
-            AM_PM = "AM";
-            m_minute = (currentTimezoneOffset % 3600)/60;
-            utc_minutes -= m_minute;
-
-            if(utc_minutes < 0){
-                utc_minutes += 60;
-                hour -= 1;
-            }
-
-            if(hour >= 12){
-                AM_PM = "PM";
-                hour -= 12;
-                if(hour == 0){
-                    hour = 12;
-                }
-            }else if(hour < 0){
-                hour = abs(hour);
-                AM_PM = "PM";
-            }
-            else{
-                AM_PM = "AM";
-            }
-
-            if(hour == 12){
-                AM_PM = "PM";
-            }
-
-            if(hour < 0){
-                hour += 12;
-            }
-        }
+    if (minutes >= 60) {
+        minutes -= 60;
+        hours += 1;
+    } else if (minutes < 0) {
+        minutes += 60;
+        hours -= 1;
     }
 
-    if(utc_minutes < 10 && utc_seconds < 10 ){
-        clock.innerHTML = hour + ":0" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
+    if (hours >= 24) hours -= 24;
+    if (hours >= 12) {
+        amPm = 'PM';
+        if (hours > 12) hours -= 12;
+        if (hours === 0) hours = 12;
     }
-    else if(utc_seconds < 10){
-        clock.innerHTML = hour + ":" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
-    }
-    else if(utc_minutes < 10){
-        clock.innerHTML = hour + ":0" + utc_minutes + ":" + utc_seconds + " " + AM_PM;
-    }else{
-        clock.innerHTML = hour + ":" + utc_minutes + ":" + utc_seconds + " " + AM_PM;    
-    }
-    }, 0
-);
+
+    clock.innerText = formatTime(hours, minutes, utcSeconds, amPm);
+});
+
+const formatTime = (hours, minutes, seconds, amPm) => {
+    const pad = (num) => String(num).padStart(2, '0');
+    return `${hours}:${pad(minutes)}:${pad(seconds)} ${amPm}`;
+};
 
 //searching
 searchButton.addEventListener("click", function () {
