@@ -37,7 +37,11 @@ Open the project in your browser
 
 
 ## 📸 Screenshots
-![kép](https://github.com/user-attachments/assets/47b8ddf7-2307-4ff0-bab9-70c4737c7554)
+![kép](https://github.com/user-attachments/assets/edc6442b-bcbe-416f-bdff-2d6c46cc8484)
+![kép](https://github.com/user-attachments/assets/e1eeba22-b583-4d85-b3a4-6214b9e7d31c)
+![kép](https://github.com/user-attachments/assets/32bfe428-661c-4d0b-972c-c2c92a41f46e)
+
+
 
 
 ## 🙌 Acknowledgments
