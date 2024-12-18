@@ -103,6 +103,10 @@ const updateTime = setInterval(() => {
             if (hours > 12) hours -= 12;
         }
     }
+	
+	if (!isClockTwelve) {
+        amPm ='';
+    }
 
     clock.innerText = formatTime(hours, minutes, utcSeconds, amPm);
 });
